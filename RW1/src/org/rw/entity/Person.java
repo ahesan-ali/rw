@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.rw.util.StringUtils;
 import org.rw.util.TimestampUtils;
 
@@ -96,7 +95,7 @@ public Person() {
 		StringBuffer person = new StringBuffer();
 		
 		person.append("{");
-			person.append("id:" + id + ",");
+			person.append(StringUtils.doubleQuote("id:") + id + ",");
 			person.append("firstName:" + StringUtils.doubleQuote(firstName) + ",");
 			person.append("lastName:" + StringUtils.doubleQuote(lastName) + ",");
 			person.append("gender:" + StringUtils.doubleQuote(gender) + ",");

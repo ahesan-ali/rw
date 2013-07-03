@@ -8,15 +8,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("personService")
-@Transactional(readOnly = true)
+@Transactional(readOnly=true)
 public class PersonServiceImpl implements PersonService {
 
+	
 	@Autowired
 	private PersonDao personDao;
 	
+	
 	@Override
+	@Transactional(readOnly=false)
 	public void save(Person person) {
 		personDao.create(person);
 	}
+	
 
 }

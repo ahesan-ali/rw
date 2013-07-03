@@ -5,23 +5,24 @@ import java.sql.Timestamp;
 import org.rw.entity.Person;
 import org.rw.service.PersonService;
 import org.rw.spring.propertyeditor.TimestampPropertyEditor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
 @RequestMapping(value="/person")
 public class PersonController {
 
+	private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 	
 	@Autowired
 	private PersonService personService;
@@ -46,8 +47,8 @@ public class PersonController {
 	//@ResponseBody
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(Model model, Person person) {
-		System.out.println("in save");
-		//personService.save(person);
+		logger.debug("in save");
+		personService.save(person);
 		return "redirect:view/1";
 	}
 	
