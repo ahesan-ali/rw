@@ -1,5 +1,6 @@
 package org.rw.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -15,7 +16,10 @@ import org.rw.util.TimestampUtils;
 
 @Entity
 @Table(name="Person")
-public class Person {
+public class Person implements Serializable {
+	
+	private static final long serialVersionUID = 4776683158475479656L;
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -34,20 +38,19 @@ public class Person {
 	@Column(name="DOB")
 	private Timestamp dob;
 	
-public Person() {
 	
-}
+	public Person() {
+		
+	}
 
-
-	public Person(Long id, String firstName, String lastName, String gender,
-		Timestamp dob) {
-	super();
-	this.id = id;
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.gender = gender;
-	this.dob = dob;
-}
+	public Person(Long id, String firstName, String lastName, String gender, Timestamp dob) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dob = dob;
+	}
 
 
 	public Long getId() {
@@ -104,5 +107,6 @@ public Person() {
 		
 		return person.toString();
 	}
+	
 	
 }

@@ -30,6 +30,7 @@ public class PersonController {
 	@Autowired
 	TimestampPropertyEditor timestampPropertyEditor;
 	
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Timestamp.class, "dob", timestampPropertyEditor);
@@ -48,14 +49,15 @@ public class PersonController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(Model model, Person person) {
 		logger.debug("in save");
-		personService.save(person);
-		return "redirect:view/1";
+		Long personId = personService.save(person);
+		return "redirect:view/" + personId;
 	}
 	
 	
 	@RequestMapping(value="/view/{personId}")
-	public String view(@PathVariable String personId, ModelMap model) {
-		model.addAttribute("personId", personId);
+	public String view(@PathVariable Long personId, ModelMap model) {
+		Person person = personService.findById(personId);
+		model.addAttribute("person", person);
 		return "PersonView";
 	}
 	

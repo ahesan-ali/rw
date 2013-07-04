@@ -7,7 +7,11 @@
 </head>
 <body>
 
-	Viewing Person ${personId} here
+	Viewing Person ${person.id} here
+	<br>first name : ${person.firstName}
+	<br>last name : ${person.lastName}
+	<br>gender : ${person.gender}
+	<br>DOB : ${person.dob}
 
 </body>
 </html>
