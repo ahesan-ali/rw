@@ -27,6 +27,9 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	@Transactional(readOnly=true)
 	public Person findById(Long id) {
+		if (id == null) {
+			throw new PersonNotFoundException(id);
+		}
 		Person person = personDao.read(id);
 		if (person == null) {
 			throw new PersonNotFoundException(id);
