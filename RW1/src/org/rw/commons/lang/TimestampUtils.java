@@ -1,4 +1,4 @@
-package org.rw.util;
+package org.rw.commons.lang;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

@@ -1,4 +1,4 @@
-package org.rw.util;
+package org.rw.commons.lang;
 
 
 public class StringUtils extends org.apache.commons.lang.StringUtils {

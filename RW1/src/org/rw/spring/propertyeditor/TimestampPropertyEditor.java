@@ -2,7 +2,7 @@ package org.rw.spring.propertyeditor;
 
 import java.beans.PropertyEditorSupport;
 
-import org.rw.util.TimestampUtils;
+import org.rw.commons.lang.TimestampUtils;
 import org.springframework.stereotype.Component;
 
 @Component

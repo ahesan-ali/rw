@@ -1,6 +1,8 @@
 package org.rw.util;
 
 import org.junit.Test;
+import org.rw.commons.lang.StringUtils;
+
 import static org.junit.Assert.*;
 
 public class StringUtilsTest {

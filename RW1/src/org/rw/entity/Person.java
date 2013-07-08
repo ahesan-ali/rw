@@ -10,8 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.rw.util.StringUtils;
-import org.rw.util.TimestampUtils;
+import org.rw.commons.lang.StringUtils;
+import org.rw.commons.lang.TimestampUtils;
 
 
 @Entity
