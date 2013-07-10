@@ -6,6 +6,10 @@ import org.rw.dao.PersonDao;
 import org.rw.entity.Person;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @since 1.0
+ * @author anil.bharadia
+ */
 @Repository
 public class PersonDaoImpl extends GenericDaoImpl<Person, Long> implements PersonDao {
 

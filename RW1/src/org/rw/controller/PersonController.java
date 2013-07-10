@@ -39,16 +39,13 @@ public class PersonController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public String showAddForm(Model model) {
-		model.addAttribute("person",new Person());
+		model.addAttribute("person", new Person());
 		return "PersonAddEditForm";
 	}
 	
 	
-	//@ExceptionHandler(Throwable.class)
-	//@ResponseBody
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(Model model, Person person) {
-		logger.debug("in save");
 		Long personId = personService.save(person);
 		return "redirect:view/" + personId;
 	}
@@ -76,6 +73,7 @@ public class PersonController {
 	
 	@RequestMapping(value="/delete/{personId}")
 	public String delete() {
+		logger.debug("deleting person");
 		return "";
 	}
 	
