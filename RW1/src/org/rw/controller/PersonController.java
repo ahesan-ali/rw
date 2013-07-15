@@ -1,6 +1,7 @@
 package org.rw.controller;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.rw.entity.Person;
 import org.rw.service.PersonService;
@@ -74,6 +75,24 @@ public class PersonController {
 	@RequestMapping(value="/delete/{personId}")
 	public String delete() {
 		logger.debug("deleting person");
+		return "";
+	}
+	
+	
+	@RequestMapping(value="/search", method=RequestMethod.GET)
+	public String search(Model model) {
+		model.addAttribute("person", new Person());
+		return "PersonSearchForm";
+	}
+	
+	
+	@RequestMapping(value="/search", method=RequestMethod.POST)
+	public String search(Model model, Person person) {
+		String firstName = person.getFirstName();
+		List<Person> persons = personService.findByFirstName(firstName);
+		for (Person p : persons) {
+			logger.debug("*** === " + p.getFirstName());
+		}
 		return "";
 	}
 	

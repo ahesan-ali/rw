@@ -17,11 +17,12 @@ public class PersonDaoImpl extends GenericDaoImpl<Person, Long> implements Perso
 		super(Person.class);
 	}
 	
-
+	
+	
 	@Override
-	public List<Person> findByFirstName(String firstName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Person> findByFirstName(final String firstName) {
+		return findByProperty("firstName", firstName);
 	}
+
 
 }

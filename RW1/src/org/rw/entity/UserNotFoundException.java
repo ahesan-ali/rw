@@ -1,6 +1,5 @@
-package org.rw.exception;
+package org.rw.entity;
 
-import org.rw.entity.User;
 
 /**
  * @since 1.0

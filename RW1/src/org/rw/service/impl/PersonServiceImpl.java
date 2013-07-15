@@ -1,8 +1,10 @@
 package org.rw.service.impl;
 
+import java.util.List;
+
 import org.rw.dao.PersonDao;
 import org.rw.entity.Person;
-import org.rw.exception.PersonNotFoundException;
+import org.rw.entity.PersonNotFoundException;
 import org.rw.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,12 @@ public class PersonServiceImpl implements PersonService {
 			throw new PersonNotFoundException(id);
 		}
 		return person;
+	}
+
+
+	@Override
+	public List<Person> findByFirstName(final String firstName) {
+		return personDao.findByFirstName(firstName);
 	}
 	
 

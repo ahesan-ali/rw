@@ -1,7 +1,7 @@
 package org.rw.service;
 
 import org.rw.entity.User;
-import org.rw.exception.UserNotFoundException;
+import org.rw.entity.UserNotFoundException;
 
 /**
  * @since 1.0

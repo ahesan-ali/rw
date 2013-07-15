@@ -2,7 +2,7 @@ package org.rw.service.impl;
 
 import org.rw.dao.UserDao;
 import org.rw.entity.User;
-import org.rw.exception.UserNotFoundException;
+import org.rw.entity.UserNotFoundException;
 import org.rw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

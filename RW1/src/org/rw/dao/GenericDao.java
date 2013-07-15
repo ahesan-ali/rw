@@ -1,6 +1,7 @@
 package org.rw.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface GenericDao <E, PK extends Serializable> {
 
@@ -15,5 +16,7 @@ public interface GenericDao <E, PK extends Serializable> {
 
     /** Remove an object from persistent storage in the database */
     void delete(E persistentObject);
+    
+    List<E> findByProperty(String propertyName, String propertyValue);
 }
 

@@ -1,4 +1,4 @@
-package org.rw.exception;
+package org.rw.entity;
 
 import java.io.Serializable;
 
