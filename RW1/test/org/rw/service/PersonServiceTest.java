@@ -75,4 +75,11 @@ public class PersonServiceTest {
 	}
 	
 	
+	@Test
+	public void findAll() {
+		List<Person> persons = personService.findAll();
+		System.out.println(persons.size());
+	}
+	
+	
 }
