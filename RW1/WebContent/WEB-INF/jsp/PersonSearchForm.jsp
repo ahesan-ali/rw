@@ -9,6 +9,10 @@ Person Search Form
 			<td><form:input path="firstName"/></td>
 		</tr>
 		<tr>
+			<td>Last Name</td>
+			<td><form:input path="lastName"/></td>
+		</tr>
+		<tr>
 			<td><button type="submit">Search</button></td>
 			<td><button type="reset">reset</button></td>
 		</tr>
