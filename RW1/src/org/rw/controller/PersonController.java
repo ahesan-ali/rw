@@ -80,7 +80,7 @@ public class PersonController {
 	
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public String search(Model model) {
+	public String showSearchForm(Model model) {
 		model.addAttribute("person", new Person());
 		return "PersonSearchForm";
 	}
@@ -88,13 +88,29 @@ public class PersonController {
 	
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	public String search(Model model, Person person) {
-		String firstName = person.getFirstName();
-		List<Person> persons = personService.findByFirstName(firstName);
-		for (Person p : persons) {
-			logger.debug("*** === " + p.getFirstName());
-		}
-		return "";
+		List<Person> persons = personService.findByLikeExample(person);
+		model.addAttribute("persons", persons);
+		return "PersonSearchResult";
 	}
 	
+	/*//one method for all crud operation
+	@RequestMapping(value="/person", method=RequestMethod.POST)
+	public String doAction(@ModelAttribute Person person,@RequestParam String request)
+	{
+		Person resultPerson=new Person();
+		switch (request.toLowerCase()) { // only for jdk1.7
+		case "add":
+			personService.save(person);
+			resultPerson=person;
+			break;
+		case "update":
+			resultPerson=person;
+			break;
+		case "delete":
+			break;
+		case "search":
+		}
+		return "personView";
+	}*/
 	
 }
