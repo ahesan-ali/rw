@@ -10,6 +10,11 @@ import org.rw.entity.Person;
  */
 public interface PersonDao extends GenericDao<Person, Long> {
 
+
 	List<Person> findByFirstName(String firstName);
+
+	
+	List<Person> findByExample(Person person);
+
 	
 }
