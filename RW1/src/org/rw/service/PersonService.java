@@ -18,4 +18,8 @@ public interface PersonService {
 
 	List<Person> findByFirstName(String firstName);
 
+	List<Person> findByLikeExample(Person person);
+
+	List<Person> findAll();
+
 }
