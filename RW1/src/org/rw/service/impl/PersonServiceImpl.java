@@ -45,8 +45,23 @@ public class PersonServiceImpl implements PersonService {
 
 
 	@Override
+	@Transactional(readOnly=true)
 	public List<Person> findByFirstName(final String firstName) {
 		return personDao.findByFirstName(firstName);
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<Person> findByLikeExample(Person person) {
+		return personDao.findByLikeExample(person);
+	}
+	
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<Person> findAll() {
+		return personDao.findAll();
 	}
 	
 
