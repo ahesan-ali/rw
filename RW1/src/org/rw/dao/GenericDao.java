@@ -22,7 +22,7 @@ public interface GenericDao <E, PK extends Serializable> {
     void delete(E persistentObject);
     
     
-    List<E> findByProperty(String propertyName, String propertyValue);
+    List<E> findByProperty(String propertyName, Object propertyValue);
     
     
     List<E> findByExample(E entity);

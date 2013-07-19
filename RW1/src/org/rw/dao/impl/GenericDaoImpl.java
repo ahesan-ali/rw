@@ -9,13 +9,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.rw.dao.GenericDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E, PK>/*, FinderExecutor*/ {
 	
-	
+	/** default like clause match mode */
 	protected static final MatchMode DEFAULT_MATCH_MODE = MatchMode.ANYWHERE;
+	
+	protected static final String DEFAULT_ORDER_BY = "dateCreated";
 	
 	private Class<E> persistentClass;
 	
@@ -29,17 +33,19 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public PK create(E entity) {
-	    return (PK) getSession().save(entity);
+	    @SuppressWarnings("unchecked")
+		PK id = (PK) getSession().save(entity);
+	    return id;
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public E read(PK id) {
-	    return (E) getSession().get(persistentClass, id);
+	    @SuppressWarnings("unchecked")
+		E entity = (E) getSession().get(persistentClass, id);
+	    return entity;
 	}
 	
 	
@@ -55,34 +61,67 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<E> findByProperty(final String propertyName,  final String propertyValue) {
-		Query query = getSession().createQuery("from " + persistentClass.getSimpleName() + " where " + propertyName + " = :propertyValue");
-		query.setParameter("propertyValue", propertyValue);
-		return query.list();
+	public List<E> findByProperty(final String propertyName, final Object propertyValue) {
+		return findByPropertyWithCriteria(propertyName, propertyValue);
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	public List<E> findByPropertyWithHql(final String propertyName, final Object propertyValue) {
+		StringBuffer queryString = new StringBuffer("from "); 
+		queryString.append(persistentClass.getSimpleName());
+		queryString.append(" where ");
+		queryString.append(propertyName);
+		queryString.append(" = :propertyValue order by ");
+		queryString.append(DEFAULT_ORDER_BY);
+		queryString.append(" desc");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("propertyValue", propertyValue);
+		
+		@SuppressWarnings("unchecked")
+		List<E> entities = query.list();
+		return entities;
+	}
+	
+	
+	public List<E> findByPropertyWithCriteria(final String propertyName, final Object propertyValue) {
+		Criteria criteria = createCriteria();
+		criteria.add(Restrictions.eq(propertyName, propertyValue));
+		criteria.addOrder(Order.desc(DEFAULT_ORDER_BY));
+		
+		@SuppressWarnings("unchecked")
+		List<E> entities = criteria.list();
+		return entities;
+	}
+	
+	
 	@Override
 	public List<E> findByExample(E entity) {
 		Criteria criteria = createCriteriaWithExample(entity);
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<E> entities = criteria.list();
+		return entities;
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<E> findByLikeExample(E entity) {
 		Criteria criteria = createCriteriaWithLikeExample(entity);
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<E> entities = criteria.list();
+		return entities;
 	}
+
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<E> findAll() {
-		return createCriteria().list();
+		Criteria criteria = createCriteria();
+		criteria.addOrder(Order.desc(DEFAULT_ORDER_BY));
+		
+		@SuppressWarnings("unchecked")
+		List<E> entities = criteria.list();
+		return entities;
 	}
 	
 	
@@ -96,7 +135,10 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	}
 	
 	
-	/** with DEFAULT_MATCH_MODE */
+	/** 
+	 * with DEFAULT_MATCH_MODE
+	 * @see #DEFAULT_MATCH_MODE
+	 */
 	protected Example createLikeExample(E entity) {
 		return createLikeExample(entity, DEFAULT_MATCH_MODE);
 	}

@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.rw.entity.Person;
 import org.rw.entity.PersonNotFoundException;
+import org.rw.test.SpringInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,11 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
 
-@TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration({ "classpath:/spring/applicationContext.xml" })
-@Transactional
-@RunWith(SpringJUnit4ClassRunner.class)
-public class PersonServiceTest {
+
+public class PersonServiceTest extends SpringInitializer {
 
 	@Autowired
 	private PersonService personService;
