@@ -5,9 +5,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.rw.commons.lang.StringUtils;
@@ -38,11 +41,26 @@ public class Person implements Serializable {
 	@Column(name="DOB")
 	private Timestamp dob;
 	
+	@Column(name="dateCreated")
+	private Timestamp dateCreated;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="CreatedById", nullable=false)
+	private User createdBy;
+	
+	@Column(name="DateModified")
+	private Timestamp dateModified;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="ModifiedById", nullable=false)
+	private User modifiedBy;
+	
 	
 	public Person() {
 		
 	}
 
+	
 	public Person(Long id, String firstName, String lastName, String gender, Timestamp dob) {
 		super();
 		this.id = id;
@@ -93,6 +111,38 @@ public class Person implements Serializable {
 	}
 	
 	
+	public Timestamp getDateCreated() {
+		return dateCreated;
+	}
+	public void setDateCreated(Timestamp dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+
+
+	public Timestamp getDateModified() {
+		return dateModified;
+	}
+	public void setDateModified(Timestamp dateModified) {
+		this.dateModified = dateModified;
+	}
+
+
+	public User getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(User modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+
 	@Override
 	public String toString() {
 		StringBuffer person = new StringBuffer();

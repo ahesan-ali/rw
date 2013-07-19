@@ -5,12 +5,16 @@ package org.rw.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -36,6 +40,12 @@ public class User implements Serializable {
 	
 	@Column(name="DateRegistered")
 	private Timestamp dateRegistered;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
+	private Set<Person> personsCreated = new HashSet<Person>();
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
+	private Set<Person> personsModified = new HashSet<Person>();
 	
 	
 	public Long getId() {
@@ -67,6 +77,22 @@ public class User implements Serializable {
 	}
 	public void setDateRegistered(Timestamp dateRegistered) {
 		this.dateRegistered = dateRegistered;
+	}
+	
+	
+	public Set<Person> getPersonsCreated() {
+		return personsCreated;
+	}
+	public void setPersonsCreated(Set<Person> personsCreated) {
+		this.personsCreated = personsCreated;
+	}
+	
+	
+	public Set<Person> getPersonsModified() {
+		return personsModified;
+	}
+	public void setPersonsModified(Set<Person> personsModified) {
+		this.personsModified = personsModified;
 	}
 
 	
