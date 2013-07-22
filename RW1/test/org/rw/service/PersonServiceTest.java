@@ -1,6 +1,6 @@
 package org.rw.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -42,6 +42,13 @@ public class PersonServiceTest extends SpringInitializer {
 		thrown.expect(PersonNotFoundException.class);
 		personService.findById(null);
 	}
+	
+	@Test
+	public void findByIdNegative() {
+		thrown.expect(PersonNotFoundException.class);
+		personService.findById(-1l);
+	}
+	
 	
 	@Test
 	public void findByFirstName() {

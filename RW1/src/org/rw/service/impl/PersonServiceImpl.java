@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.rw.dao.PersonDao;
 import org.rw.entity.Person;
-import org.rw.entity.PersonNotFoundException;
 import org.rw.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,15 +31,8 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Person findById(Long id) {
-		if (id == null) {
-			throw new PersonNotFoundException(id);
-		}
-		Person person = personDao.read(id);
-		if (person == null) {
-			throw new PersonNotFoundException(id);
-		}
-		return person;
+	public Person findById(final Long id) {
+		return personDao.read(id);
 	}
 
 
@@ -53,7 +45,7 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<Person> findByLikeExample(Person person) {
+	public List<Person> findByLikeExample(final Person person) {
 		return personDao.findByLikeExample(person);
 	}
 	

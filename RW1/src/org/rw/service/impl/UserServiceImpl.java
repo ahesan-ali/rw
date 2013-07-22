@@ -1,10 +1,15 @@
 package org.rw.service.impl;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.rw.dao.UserDao;
+import org.rw.entity.DuplicateUsernameException;
 import org.rw.entity.User;
-import org.rw.entity.UserNotFoundException;
 import org.rw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +34,23 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional(readOnly=true)
-	public User findById(Long id) throws UserNotFoundException {
-		if (id == null) {
-			throw new UserNotFoundException(id);
+	public User findById(final Long id) {
+		return userDao.read(id);
+	}
+
+
+	@Override
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		if (StringUtils.isBlank(username)) {
+			throw new UsernameNotFoundException("username is null or blank");
 		}
-		User user = userDao.read(id);
-		if (user == null) {
-			throw new UserNotFoundException(id);
+		
+		List<User> users = userDao.findByProperty("username", username);
+		if (users.size() != 1) {
+			throw new DuplicateUsernameException(username);
+		} else {
+			return users.get(0);
 		}
-		return user;
 	}
 	
 

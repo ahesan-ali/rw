@@ -1,6 +1,8 @@
 package org.rw.dao.impl;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -12,9 +14,13 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.rw.dao.GenericDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E, PK>/*, FinderExecutor*/ {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericDaoImpl.class);
 	
 	/** default like clause match mode */
 	protected static final MatchMode DEFAULT_MATCH_MODE = MatchMode.ANYWHERE;
@@ -42,9 +48,16 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	
 	
 	@Override
-	public E read(PK id) {
+	public E read(final PK id) {
+		validatePKForRead(id);
+		
 	    @SuppressWarnings("unchecked")
 		E entity = (E) getSession().get(persistentClass, id);
+	    
+	    if (entity == null) {
+	    	throwEntityNotFoundException(id);
+		}
+	    
 	    return entity;
 	}
 	
@@ -58,6 +71,45 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	@Override
 	public void delete(E entity) {
 	    getSession().delete(entity);
+	}
+	
+	
+	private void validatePKForRead(final PK id) {
+		if (id == null) {
+			throwEntityNotFoundException(id);
+		} else if (id instanceof Long) {
+			Long idValue = (Long) id;
+			if (idValue < 1) {
+				throwEntityNotFoundException(id);
+			}
+		}
+	}
+
+
+	protected void throwEntityNotFoundException(final PK id) {
+		try {
+			Class<?> exceptionClass = getEntityNotFoundExceptionClass();
+			Constructor<?> constructor = exceptionClass.getConstructor(Long.class);
+			RuntimeException ex = (RuntimeException) constructor.newInstance(id);
+			throw ex;
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			LOGGER.error("error throwing EntityNotFoundException", e);
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	protected Class<?> getEntityNotFoundExceptionClass() {
+		try {
+			return Class.forName(getEntityNotFoundExceptionClassName());
+		} catch (ClassNotFoundException cnfe) {
+			throw new RuntimeException(cnfe);
+		}
+	}
+	
+	
+	protected String getEntityNotFoundExceptionClassName() {
+		return persistentClass.getName() + "NotFoundException";
 	}
 
 	

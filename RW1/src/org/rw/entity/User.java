@@ -5,6 +5,7 @@ package org.rw.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,8 +15,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author anil.bharadia
@@ -23,7 +29,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="User")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1491705580500250495L;
 
@@ -38,14 +44,34 @@ public class User implements Serializable {
 	@Column(name="Password")
 	private String password;
 	
-	@Column(name="DateRegistered")
-	private Timestamp dateRegistered;
+	@Column(name="dateCreated")
+	private Timestamp dateCreated;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy")
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="CreatedByUserId", nullable=false)
+	private User createdByUser;
+	
+	@Column(name="DateModified")
+	private Timestamp dateModified;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="ModifiedByUserId", nullable=false)
+	private User modifiedByUser;
+
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdByUser")
 	private Set<Person> personsCreated = new HashSet<Person>();
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedByUser")
 	private Set<Person> personsModified = new HashSet<Person>();
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdByUser")
+	private Set<User> usersCreated = new HashSet<User>();
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedByUser")
+	private Set<User> usersModified = new HashSet<User>();
+	
+	
 	
 	
 	public Long getId() {
@@ -72,11 +98,51 @@ public class User implements Serializable {
 	}
 
 	
-	public Timestamp getDateRegistered() {
-		return dateRegistered;
+	public Timestamp getDateCreated() {
+		return dateCreated;
 	}
-	public void setDateRegistered(Timestamp dateRegistered) {
-		this.dateRegistered = dateRegistered;
+	public void setDateCreated(Timestamp dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	
+	
+	public User getCreatedByUser() {
+		return createdByUser;
+	}
+	public void setCreatedByUser(User createdByUser) {
+		this.createdByUser = createdByUser;
+	}
+	
+	
+	public Timestamp getDateModified() {
+		return dateModified;
+	}
+	public void setDateModified(Timestamp dateModified) {
+		this.dateModified = dateModified;
+	}
+	
+	
+	public User getModifiedByUser() {
+		return modifiedByUser;
+	}
+	public void setModifiedByUser(User modifiedByUser) {
+		this.modifiedByUser = modifiedByUser;
+	}
+	
+	
+	public Set<User> getUsersCreated() {
+		return usersCreated;
+	}
+	public void setUsersCreated(Set<User> usersCreated) {
+		this.usersCreated = usersCreated;
+	}
+	
+	
+	public Set<User> getUsersModified() {
+		return usersModified;
+	}
+	public void setUsersModified(Set<User> usersModified) {
+		this.usersModified = usersModified;
 	}
 	
 	
@@ -93,6 +159,33 @@ public class User implements Serializable {
 	}
 	public void setPersonsModified(Set<Person> personsModified) {
 		this.personsModified = personsModified;
+	}
+	
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

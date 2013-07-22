@@ -44,16 +44,16 @@ public class Person implements Serializable {
 	@Column(name="dateCreated")
 	private Timestamp dateCreated;
 	
-	@ManyToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="CreatedById", nullable=false)
-	private User createdBy;
-	
 	@Column(name="DateModified")
 	private Timestamp dateModified;
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="ModifiedById", nullable=false)
-	private User modifiedBy;
+	@JoinColumn(name="CreatedByUserId", nullable=false)
+	private User createdByUser;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="ModifiedByUserId", nullable=false)
+	private User modifiedByUser;
 	
 	
 	public Person() {
@@ -119,14 +119,6 @@ public class Person implements Serializable {
 	}
 
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
-
-
 	public Timestamp getDateModified() {
 		return dateModified;
 	}
@@ -135,11 +127,19 @@ public class Person implements Serializable {
 	}
 
 
-	public User getModifiedBy() {
-		return modifiedBy;
+	public User getCreatedByUser() {
+		return createdByUser;
 	}
-	public void setModifiedBy(User modifiedBy) {
-		this.modifiedBy = modifiedBy;
+	public void setCreatedByUser(User createdByUser) {
+		this.createdByUser = createdByUser;
+	}
+
+
+	public User getModifiedByUser() {
+		return modifiedByUser;
+	}
+	public void setModifiedByUser(User modifiedByUser) {
+		this.modifiedByUser = modifiedByUser;
 	}
 
 
