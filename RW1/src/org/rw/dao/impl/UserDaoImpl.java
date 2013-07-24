@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * @author anil.bharadia
  */
 @Repository
-public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
+public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
 	public UserDaoImpl() {
 		super(User.class);

@@ -1,13 +1,17 @@
 package org.rw.service;
 
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.rw.entity.Person;
+import org.rw.entity.User;
 import org.rw.entity.UserNotFoundException;
-import org.rw.test.SpringInitializer;
+import org.rw.test.SpringServiceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UserServiceTest extends SpringInitializer {
+public class UserServiceTest extends SpringServiceTest {
 
 	@Rule
  	public ExpectedException thrown = ExpectedException.none();
@@ -39,6 +43,13 @@ public class UserServiceTest extends SpringInitializer {
 	
 	public void findByIdPositive() {
 		userService.findById(1l);
+	}
+	
+	
+	@Test
+	public void findAll() {
+		List<User> users = userService.findAll();
+		System.out.println(users.size());
 	}
 	
 	

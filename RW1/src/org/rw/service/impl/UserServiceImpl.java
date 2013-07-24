@@ -41,6 +41,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		return findByUsername(username);
+	}
+
+
+	@Override
+	public User findByUsername(final String username) {
 		if (StringUtils.isBlank(username)) {
 			throw new UsernameNotFoundException("username is null or blank");
 		}
@@ -51,6 +57,13 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return users.get(0);
 		}
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<User> findAll() {
+		return userDao.findAll();
 	}
 	
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * @author anil.bharadia
  */
 @Repository
-public class PersonDaoImpl extends GenericDaoImpl<Person, Long> implements PersonDao {
+public class PersonDaoImpl extends GenericDaoImpl<Person> implements PersonDao {
 
 	public PersonDaoImpl() {
 		super(Person.class);

@@ -1,6 +1,5 @@
 package org.rw.dao.impl;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -14,11 +13,21 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.rw.dao.GenericDao;
+import org.rw.entity.PersistentObject;
+import org.rw.util.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E, PK>/*, FinderExecutor*/ {
+public class GenericDaoImpl <E extends PersistentObject> implements GenericDao<E>/*, FinderExecutor*/ {
+	
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private SpringUtils springUtils;
+	
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericDaoImpl.class);
 	
@@ -30,26 +39,22 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	private Class<E> persistentClass;
 	
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	
 	public GenericDaoImpl(Class<E> entityType) {
 	    this.persistentClass = entityType;
 	}
 	
 	
 	@Override
-	public PK create(E entity) {
-	    @SuppressWarnings("unchecked")
-		PK id = (PK) getSession().save(entity);
-	    return id;
+	public Long create(E entity) {
+		entity.setCreatedByUser(springUtils.getLoggedInUser());
+		entity.setModifiedByUser(springUtils.getLoggedInUser());
+	    return (Long) getSession().save(entity);
 	}
 	
 	
 	@Override
-	public E read(final PK id) {
-		validatePKForRead(id);
+	public E read(final Long id) {
+		validateIdForRead(id);
 		
 	    @SuppressWarnings("unchecked")
 		E entity = (E) getSession().get(persistentClass, id);
@@ -64,6 +69,7 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	
 	@Override
 	public void update(E entity) {
+		entity.setModifiedByUser(springUtils.getLoggedInUser());
 	    getSession().update(entity);
 	}
 	
@@ -74,19 +80,14 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 	}
 	
 	
-	private void validatePKForRead(final PK id) {
-		if (id == null) {
+	private void validateIdForRead(final Long id) {
+		if (id == null  ||  id < 1) {
 			throwEntityNotFoundException(id);
-		} else if (id instanceof Long) {
-			Long idValue = (Long) id;
-			if (idValue < 1) {
-				throwEntityNotFoundException(id);
-			}
 		}
 	}
 
 
-	protected void throwEntityNotFoundException(final PK id) {
+	protected void throwEntityNotFoundException(final Long id) {
 		try {
 			Class<?> exceptionClass = getEntityNotFoundExceptionClass();
 			Constructor<?> constructor = exceptionClass.getConstructor(Long.class);
@@ -227,6 +228,10 @@ public class GenericDaoImpl <E, PK extends Serializable> implements GenericDao<E
 		criteria.add(example);
 		return criteria;
 	}
+	
+	
+	
+	
 
 	
 }

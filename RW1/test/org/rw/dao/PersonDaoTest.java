@@ -1,15 +1,13 @@
 package org.rw.dao;
 
-import static org.junit.Assert.*;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.rw.entity.PersonNotFoundException;
-import org.rw.test.SpringInitializer;
+import org.rw.test.SpringDaoTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class PersonDaoTest extends SpringInitializer {
+public class PersonDaoTest extends SpringDaoTest {
 
 	@Autowired
 	private PersonDao personDao;

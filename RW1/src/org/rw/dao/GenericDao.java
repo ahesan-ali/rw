@@ -1,22 +1,22 @@
 package org.rw.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
+import org.rw.entity.PersistentObject;
 import org.rw.entity.EntityNotFoundException;
 
-public interface GenericDao <E, PK extends Serializable> {
+public interface GenericDao <E extends PersistentObject> {
 
 	
     /** Persist the newInstance object into database */
-    PK create(E newInstance);
+    Long create(E newInstance);
 
     
     /**
      * Retrieve an object that was previously persisted to the database using the indicated id as primary key
      * @return a persistent instance or {@link EntityNotFoundException} (never <code>null</code>)
      */
-    E read(PK id);
+    E read(Long id);
 
     
     /** Save changes made to a persistent object.  */

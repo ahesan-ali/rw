@@ -3,8 +3,6 @@
  */
 package org.rw.entity;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,11 +10,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,14 +22,11 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Entity
 @Table(name="User")
-public class User implements Serializable, UserDetails {
+public class User extends AbstractPersistentObject implements UserDetails {
+
 
 	private static final long serialVersionUID = 1491705580500250495L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="Id")
-	private Long id;
 	
 	@Column(name="Username")
 	private String username;
@@ -44,19 +34,6 @@ public class User implements Serializable, UserDetails {
 	@Column(name="Password")
 	private String password;
 	
-	@Column(name="dateCreated")
-	private Timestamp dateCreated;
-	
-	@ManyToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="CreatedByUserId", nullable=false)
-	private User createdByUser;
-	
-	@Column(name="DateModified")
-	private Timestamp dateModified;
-	
-	@ManyToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="ModifiedByUserId", nullable=false)
-	private User modifiedByUser;
 
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdByUser")
@@ -64,23 +41,15 @@ public class User implements Serializable, UserDetails {
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedByUser")
 	private Set<Person> personsModified = new HashSet<Person>();
-	
+	/*
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdByUser")
 	private Set<User> usersCreated = new HashSet<User>();
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedByUser")
 	private Set<User> usersModified = new HashSet<User>();
+	*/
 	
 	
-	
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	
 	public String getUsername() {
 		return username;
@@ -98,54 +67,6 @@ public class User implements Serializable, UserDetails {
 	}
 
 	
-	public Timestamp getDateCreated() {
-		return dateCreated;
-	}
-	public void setDateCreated(Timestamp dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	
-	
-	public User getCreatedByUser() {
-		return createdByUser;
-	}
-	public void setCreatedByUser(User createdByUser) {
-		this.createdByUser = createdByUser;
-	}
-	
-	
-	public Timestamp getDateModified() {
-		return dateModified;
-	}
-	public void setDateModified(Timestamp dateModified) {
-		this.dateModified = dateModified;
-	}
-	
-	
-	public User getModifiedByUser() {
-		return modifiedByUser;
-	}
-	public void setModifiedByUser(User modifiedByUser) {
-		this.modifiedByUser = modifiedByUser;
-	}
-	
-	
-	public Set<User> getUsersCreated() {
-		return usersCreated;
-	}
-	public void setUsersCreated(Set<User> usersCreated) {
-		this.usersCreated = usersCreated;
-	}
-	
-	
-	public Set<User> getUsersModified() {
-		return usersModified;
-	}
-	public void setUsersModified(Set<User> usersModified) {
-		this.usersModified = usersModified;
-	}
-	
-	
 	public Set<Person> getPersonsCreated() {
 		return personsCreated;
 	}
@@ -161,6 +82,23 @@ public class User implements Serializable, UserDetails {
 		this.personsModified = personsModified;
 	}
 	
+	
+	/*
+	public Set<User> getUsersCreated() {
+		return usersCreated;
+	}
+	public void setUsersCreated(Set<User> usersCreated) {
+		this.usersCreated = usersCreated;
+	}
+	
+	
+	public Set<User> getUsersModified() {
+		return usersModified;
+	}
+	public void setUsersModified(Set<User> usersModified) {
+		this.usersModified = usersModified;
+	}
+	*/
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

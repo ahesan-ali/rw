@@ -42,7 +42,7 @@ CREATE TABLE Person (
   Id int UNSIGNED  NOT NULL auto_increment,
   FirstName varchar(45) default NULL,
   LastName varchar(45) default NULL,
-  Gender varchar(45) default NULL,
+  Gender enum('MALE', 'FEMALE') default NULL,
   DOB timestamp NULL default NULL,
   DateCreated timestamp NOT NULL default '0000-00-00 00:00:00',
   CreatedByUserId int UNSIGNED NOT NULL,

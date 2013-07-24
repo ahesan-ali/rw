@@ -50,7 +50,7 @@ INSERT INTO Person (
 )
 VALUES (
     'Anil', 'Bharadia',
-    'M', '1989-02-11 00:00:00',
+    'MALE', '1989-02-11 00:00:00',
     null, 1,
     null, 1
 );

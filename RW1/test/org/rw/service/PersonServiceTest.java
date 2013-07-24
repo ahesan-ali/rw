@@ -1,6 +1,6 @@
 package org.rw.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.rw.entity.Person;
 import org.rw.entity.PersonNotFoundException;
-import org.rw.test.SpringInitializer;
+import org.rw.test.SpringServiceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class PersonServiceTest extends SpringInitializer {
+public class PersonServiceTest extends SpringServiceTest {
 
 	@Autowired
 	private PersonService personService;
