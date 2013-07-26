@@ -35,6 +35,8 @@ public class User extends AbstractPersistentObject implements UserDetails {
 	private String password;
 	
 
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="user")
+	private Set<UserRole> userRoles = new HashSet<UserRole>();
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdByUser")
 	private Set<Person> personsCreated = new HashSet<Person>();
@@ -66,6 +68,14 @@ public class User extends AbstractPersistentObject implements UserDetails {
 		this.password = password;
 	}
 
+	
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+	
 	
 	public Set<Person> getPersonsCreated() {
 		return personsCreated;
@@ -102,28 +112,27 @@ public class User extends AbstractPersistentObject implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return getUserRoles();
 	}
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	

@@ -1,11 +1,13 @@
 package org.rw.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.rw.dao.UserDao;
 import org.rw.entity.DuplicateUsernameException;
 import org.rw.entity.User;
+import org.rw.entity.UserRole;
 import org.rw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +43,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		return findByUsername(username);
+		User user = findByUsername(username);
+		
+		Set<UserRole> roles = user.getUserRoles();
+		for (@SuppressWarnings("unused") UserRole role : roles) {
+			// just to lazy load user roles
+		}
+		
+		return user;
 	}
 
 
