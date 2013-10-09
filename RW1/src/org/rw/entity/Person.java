@@ -7,9 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.rw.commons.lang.TimestampUtils;
+import org.rw.xml.adapter.SqlTimestampXmlAdapters;
 
+@JsonAutoDetect(getterVisibility=Visibility.NONE)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name="Person")
 public class Person extends AbstractPersistentObject {
@@ -18,16 +29,20 @@ public class Person extends AbstractPersistentObject {
 	private static final long serialVersionUID = 4776683158475479656L;
 	
 	
+	@JsonSerialize
 	@Column(name="FirstName")
 	private String firstName;
 	
+	@JsonSerialize
 	@Column(name="LastName")
 	private String lastName;
 	
+	@JsonSerialize
 	@Column(name="Gender", columnDefinition="enum('MALE', 'FEMALE')")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-	
+
+	@XmlJavaTypeAdapter(SqlTimestampXmlAdapters.class)
 	@Column(name="DOB")
 	private Timestamp dob;
 	

@@ -10,7 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.rw.xml.adapter.SqlTimestampXmlAdapters;
+
+@JsonAutoDetect(getterVisibility=Visibility.NONE)
+@XmlAccessorType(XmlAccessType.FIELD)
 @MappedSuperclass
 public abstract class AbstractPersistentObject implements PersistentObject {
 
@@ -18,14 +28,19 @@ public abstract class AbstractPersistentObject implements PersistentObject {
 	private static final long serialVersionUID = 82152973534901258L;
 
 	
+	@JsonSerialize
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="Id")
 	protected Long id;
 	
+	@JsonSerialize
+	@XmlJavaTypeAdapter(SqlTimestampXmlAdapters.class)
 	@Column(name="dateCreated")
 	protected Timestamp dateCreated;
 	
+	@JsonSerialize
+	@XmlJavaTypeAdapter(SqlTimestampXmlAdapters.class)
 	@Column(name="DateModified")
 	protected Timestamp dateModified;
 	

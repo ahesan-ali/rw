@@ -1,16 +1,18 @@
 package org.rw.controller;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.regex.Pattern;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.rw.service.UserService;
 import org.rw.test.SpringControllerTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -83,6 +85,41 @@ public class PersonControllerTest extends SpringControllerTest {
 				.param("dob", "11/02/1989")
 		).andExpect(
 				status().isBadRequest()
+		);
+	}
+	
+	
+	@Test
+	public void view() throws Exception {
+		mockMvc.perform(	
+			post("/person/view/1", new Object[0])
+		).andExpect(
+			status().isOk()
+		);
+	}
+	
+	
+	@Test
+	public void viewJson() throws Exception {
+		mockMvc.perform(	
+			post("/person/view/1.json", new Object[0])
+		).andExpect(
+			status().isOk()
+		).andExpect(
+			content().contentType(MediaType.APPLICATION_JSON)
+		).andExpect(
+			jsonPath("$.person.id", Matchers.equalTo(1))
+		);
+	}
+	
+	@Test
+	public void viewXml() throws Exception {
+		mockMvc.perform(	
+			post("/person/view/1.xml", new Object[0])
+		).andExpect(
+			content().contentType(MediaType.APPLICATION_XML)
+		).andExpect(
+			status().isOk()
 		);
 	}
 	

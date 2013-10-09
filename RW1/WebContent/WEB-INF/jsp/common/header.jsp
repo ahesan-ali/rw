@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		
+		<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
 	</head>
 	<body>
 		<sec:authorize access="isAuthenticated()">

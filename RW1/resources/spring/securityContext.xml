@@ -10,11 +10,7 @@
 
 
 	<http auto-config="true" use-expressions="true">
-		<!-- <intercept-url pattern="/login" access="permitAll"/>
-		<intercept-url pattern="/j_spring_security_check" access="permitAll"/>
-		<intercept-url pattern="/index.jsp" access="permitAll" /> -->
 		<intercept-url pattern="/person/add/**" access="hasRole('ROLE_ADMIN')" />
-		<!-- <intercept-url pattern="/person/**" access="hasRole('user')" /> -->
 		<intercept-url pattern="/" access="permitAll" />
 		<intercept-url pattern="/**" access="permitAll" />
 		<form-login login-page='/login'  />
@@ -28,26 +24,7 @@
 	</beans:bean>
     
     <authentication-manager>
-		<authentication-provider ref="authenticationProvider">
-			<!-- <jdbc-user-service data-source-ref="dataSource"
-	 
-			   users-by-username-query="
-			      select Username, Password, 1 as enabled 
-			      from User where Username=?" 
-	 
-			   authorities-by-username-query="
-			      select u.Username, ur.Authority from User u, UserRole ur 
-			      where u.Id = ur.UserId and u.Username =? " 
-	 
-			/> -->
-			<!-- <password-encoder ref="passwordEncoder" /> -->
-			<!-- <user-service>
-				<user name="anil" password="a15428a3795a524fb87e0deb8a5f006f4ba771d9ebc71ab05b2fd2302968c8c0b6d9318b46253386" authorities="supervisor, teller, user" />
-				<user name="teller1" password="3076ea41ad667c757063c645d8cec207b777ce43db3f2fa8282b56ad841986a1670cd755edf77daf" authorities="teller, user" />
-				<user name="scott" password="bac3435485572c3186cd5ea0ac2a04d80c3ea0bd22e2096180fb4ebcf5335dda617c2d631f0d8ac3" authorities="user" />
-				<user name="user1" password="70155a57dd9c984039d0f1fc55e0162854384c57e0274d7d7bfcd6ed3274db5ca5ed38c6c6a8cca7" authorities="user" />
-			</user-service> -->
-		</authentication-provider>
+		<authentication-provider ref="authenticationProvider" />
 	</authentication-manager>
 
 </beans:beans>
